@@ -1,0 +1,22 @@
+sudo: true
+dist: trusty
+language:
+  - c
+
+before_install:
+- sudo apt-get update
+- sudo apt-get -y install build-essential
+- sudo apt-get -y install libelf-dev
+- sudo apt-get -y install wget
+- sudo apt-get -y install unzip
+
+env:
+- BUILD_FLAGS=--disable-yasm
+- BUILD_FLAGS=--disable-swscale
+- BUILD_FLAGS=--disable-avfilter
+- BUILD_FLAGS=--disable-decoder=h264
+- BUILD_FLAGS=--disable-encoder=h264
+
+script:
+- ./configure --disable-yasm --disable-swscale --disable-avfilter --disable-decoder=h264 --disable-encoder=h264
+- make complete

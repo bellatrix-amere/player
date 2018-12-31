@@ -1,0 +1,59 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ubuntu:trusty
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get -y install build-essential
+      - run: sudo apt-get -y install libelf-dev
+      - run: sudo apt-get -y install wget
+      - run: sudo apt-get -y install unzip
+      - run: ./configure --disable-yasm --disable-swscale --disable-avfilter --disable-decoder=h264 --disable-encoder=h264
+      - run: make build_flag="" complete
+  build-disable-h264-encoder:
+    docker:
+      - image: ubuntu:trusty
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get -y install build-essential
+      - run: sudo apt-get -y install libelf-dev
+      - run: sudo apt-get -y install wget
+      - run: sudo apt-get -y install unzip
+      - run: ./configure --disable-yasm --disable-swscale --disable-avfilter --disable-decoder=h264 --disable-encoder=h264
+      - run: make build_flag="--disable-encoder=h264" complete
+  build-disable-h264-decoder:
+    docker:
+      - image: ubuntu:trusty
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get -y install build-essential
+      - run: sudo apt-get -y install libelf-dev
+      - run: sudo apt-get -y install wget
+      - run: sudo apt-get -y install unzip
+      - run: ./configure --disable-yasm --disable-swscale --disable-avfilter --disable-decoder=h264 --disable-encoder=h264
+      - run: make build_flag="--disable-decoder=h264" complete
+  build-disable-avfilter:
+    docker:
+      - image: ubuntu:trusty
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get -y install build-essential
+      - run: sudo apt-get -y install libelf-dev
+      - run: sudo apt-get -y install wget
+      - run: sudo apt-get -y install unzip
+      - run: ./configure --disable-yasm --disable-swscale --disable-avfilter --disable-decoder=h264 --disable-encoder=h264
+      - run: make build_flag="--disable-avfilter" complete
+workflows:
+  version: 2
+  ffmpeg_builds:
+    jobs:
+      - build
+      - build-disable-h264-encoder
+      - build-disable-h264-decoder
+      - build-disable-avfilter
+
